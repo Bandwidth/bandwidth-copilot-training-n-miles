@@ -14,35 +14,74 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class RecipeService {
     
     private final RecipeRepository recipeRepository;
     
+    /**
+     * Retrieves all recipes from the database
+     * @return list of all recipes
+     */
+    @Transactional(readOnly = true)
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
     
+    /**
+     * Retrieves a recipe by its ID
+     * @param id the recipe ID
+     * @return Optional containing the recipe if found
+     */
+    @Transactional(readOnly = true)
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
     
+    /**
+     * Retrieves all recipes with a specific difficulty level
+     * @param difficultyLevel the difficulty level (e.g., Easy, Medium, Hard)
+     * @return list of recipes with the specified difficulty level
+     */
+    @Transactional(readOnly = true)
     public List<Recipe> getRecipesByDifficulty(String difficultyLevel) {
         return recipeRepository.findByDifficultyLevel(difficultyLevel);
     }
     
+    /**
+     * Retrieves all recipes of a specific cuisine type
+     * @param cuisineType the cuisine type (e.g., Italian, Mexican, Chinese)
+     * @return list of recipes of the specified cuisine type
+     */
+    @Transactional(readOnly = true)
     public List<Recipe> getRecipesByCuisine(String cuisineType) {
         return recipeRepository.findByCuisineType(cuisineType);
     }
     
+    /**
+     * Searches for recipes by name containing the search term (case-insensitive)
+     * @param searchTerm the search term
+     * @return list of matching recipes
+     */
+    @Transactional(readOnly = true)
     public List<Recipe> searchRecipes(String searchTerm) {
         return recipeRepository.findByNameContainingIgnoreCase(searchTerm);
     }
     
+    /**
+     * Saves or updates a recipe
+     * @param recipe the recipe to save
+     * @return the saved recipe
+     */
+    @Transactional
     public Recipe saveRecipe(Recipe recipe) {
         return recipeRepository.save(recipe);
     }
     
+    /**
+     * Deletes a recipe by its ID
+     * @param id the recipe ID to delete
+     */
+    @Transactional
     public void deleteRecipe(Long id) {
         recipeRepository.deleteById(id);
     }
