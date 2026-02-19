@@ -82,4 +82,24 @@ public class RecipeController {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
     }
+    
+    /**
+     * Add a rating to a recipe
+     * @param id Recipe ID
+     * @param ratingRequest Request containing the rating (1-5)
+     * @return Updated recipe with new rating
+     */
+    @PutMapping("/{id}/rate")
+    public ResponseEntity<Recipe> rateRecipe(
+            @PathVariable Long id,
+            @Valid @RequestBody com.coveros.training.flavorhub.dto.RatingRequest ratingRequest) {
+        try {
+            Recipe updatedRecipe = recipeService.addRating(id, ratingRequest.getRating());
+            return ResponseEntity.ok(updatedRecipe);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
