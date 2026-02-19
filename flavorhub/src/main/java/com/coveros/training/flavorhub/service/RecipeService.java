@@ -55,7 +55,7 @@ public class RecipeService {
      * @throws IllegalArgumentException if rating is not between 1 and 5
      * @throws IllegalStateException if recipe is not found
      */
-    public Recipe addRating(Long recipeId, Integer rating) {
+    public Recipe addRating(Long recipeId, int rating) {
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("Rating must be between 1 and 5");
         }

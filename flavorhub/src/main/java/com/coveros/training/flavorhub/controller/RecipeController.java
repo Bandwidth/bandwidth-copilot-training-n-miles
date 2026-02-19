@@ -1,5 +1,6 @@
 package com.coveros.training.flavorhub.controller;
 
+import com.coveros.training.flavorhub.dto.RatingRequest;
 import com.coveros.training.flavorhub.model.Recipe;
 import com.coveros.training.flavorhub.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -92,7 +93,7 @@ public class RecipeController {
     @PutMapping("/{id}/rate")
     public ResponseEntity<Recipe> rateRecipe(
             @PathVariable Long id,
-            @Valid @RequestBody com.coveros.training.flavorhub.dto.RatingRequest ratingRequest) {
+            @Valid @RequestBody RatingRequest ratingRequest) {
         try {
             Recipe updatedRecipe = recipeService.addRating(id, ratingRequest.getRating());
             return ResponseEntity.ok(updatedRecipe);

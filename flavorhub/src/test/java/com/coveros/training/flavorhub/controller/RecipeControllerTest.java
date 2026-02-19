@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -91,7 +92,7 @@ class RecipeControllerTest {
     void testRateRecipe_WhenRecipeNotFound_ThenReturnsNotFound() throws Exception {
         // Arrange
         RatingRequest request = new RatingRequest(5);
-        when(recipeService.addRating(eq(999L), any()))
+        when(recipeService.addRating(eq(999L), anyInt()))
                 .thenThrow(new IllegalStateException("Recipe not found"));
         
         // Act & Assert
@@ -105,7 +106,7 @@ class RecipeControllerTest {
     void testRateRecipe_WhenServiceThrowsIllegalArgument_ThenReturnsBadRequest() throws Exception {
         // Arrange
         RatingRequest request = new RatingRequest(5);
-        when(recipeService.addRating(eq(1L), any()))
+        when(recipeService.addRating(eq(1L), anyInt()))
                 .thenThrow(new IllegalArgumentException("Rating must be between 1 and 5"));
         
         // Act & Assert
