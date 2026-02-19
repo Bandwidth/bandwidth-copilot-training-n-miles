@@ -16,24 +16,49 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserPantryService {
     
     private final UserPantryRepository userPantryRepository;
     private final IngredientRepository ingredientRepository;
     
+    /**
+     * Retrieves all pantry items for a specific user
+     * @param userId the user ID
+     * @return list of pantry items belonging to the user
+     */
+    @Transactional(readOnly = true)
     public List<UserPantry> getUserPantry(Long userId) {
         return userPantryRepository.findByUserId(userId);
     }
     
+    /**
+     * Retrieves a pantry item by its ID
+     * @param id the pantry item ID
+     * @return Optional containing the pantry item if found
+     */
+    @Transactional(readOnly = true)
     public Optional<UserPantry> getPantryItemById(Long id) {
         return userPantryRepository.findById(id);
     }
     
+    /**
+     * Adds a new item to the user's pantry
+     * @param pantryItem the pantry item to add
+     * @return the saved pantry item
+     */
+    @Transactional
     public UserPantry addPantryItem(UserPantry pantryItem) {
         return userPantryRepository.save(pantryItem);
     }
     
+    /**
+     * Updates an existing pantry item with new quantity, unit, and notes
+     * @param id the pantry item ID to update
+     * @param updatedPantryItem the pantry item with updated values
+     * @return the updated pantry item
+     * @throws IllegalArgumentException if pantry item with the given ID is not found
+     */
+    @Transactional
     public UserPantry updatePantryItem(Long id, UserPantry updatedPantryItem) {
         return userPantryRepository.findById(id)
             .map(existing -> {
@@ -42,13 +67,23 @@ public class UserPantryService {
                 existing.setNotes(updatedPantryItem.getNotes());
                 return userPantryRepository.save(existing);
             })
-            .orElseThrow(() -> new RuntimeException("Pantry item not found with id: " + id));
+            .orElseThrow(() -> new IllegalArgumentException("Pantry item not found with id: " + id));
     }
     
+    /**
+     * Deletes a pantry item by its ID
+     * @param id the pantry item ID to delete
+     */
+    @Transactional
     public void deletePantryItem(Long id) {
         userPantryRepository.deleteById(id);
     }
     
+    /**
+     * Clears all pantry items for a specific user
+     * @param userId the user ID whose pantry items should be cleared
+     */
+    @Transactional
     public void clearUserPantry(Long userId) {
         userPantryRepository.deleteByUserId(userId);
     }
